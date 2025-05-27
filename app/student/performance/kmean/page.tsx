@@ -33,7 +33,7 @@ const YearlyAnalysisPage: NextPage = () => {
 		setError(null);
 
 		try {
-			const response = await fetch('http://localhost:3001/api/analysis/yearly', {
+			const response = await fetch('http://localhost:3001/api/analysis/yearly/kmeans', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ const YearlyAnalysisPage: NextPage = () => {
 
 	return (
 		<div className="container mx-auto px-4 py-8">
-			<h1 className="text-2xl font-bold mb-6">Student Performance Analysis (RandomForestClassifier Technique)</h1>
+			<h1 className="text-2xl font-bold mb-6">Student Performance Analysis (KMeans Technique)</h1>
 
 			<form onSubmit={handleSubmit} className="mb-8">
 				<div className="flex gap-4">

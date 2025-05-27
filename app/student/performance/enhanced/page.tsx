@@ -19,9 +19,12 @@ interface StudentAnalysis {
 	analysis_metadata?: {
 		method_used: string;
 	};
+	year: string,
+	analysis: string,
+	total_records: number,
 }
 
-const YearlyAnalysisPage: NextPage = () => {
+const YearlyAnalysisPageEnhanced: NextPage = () => {
 	const [year, setYear] = useState<number>(2024);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [result, setResult] = useState<StudentAnalysis | null>(null);
@@ -33,7 +36,7 @@ const YearlyAnalysisPage: NextPage = () => {
 		setError(null);
 
 		try {
-			const response = await fetch('http://localhost:3001/api/analysis/yearly', {
+			const response = await fetch('http://localhost:3001/api/analysis/yearly/enhanced', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -56,7 +59,7 @@ const YearlyAnalysisPage: NextPage = () => {
 
 	return (
 		<div className="container mx-auto px-4 py-8">
-			<h1 className="text-2xl font-bold mb-6">Student Performance Analysis (RandomForestClassifier Technique)</h1>
+			<h1 className="text-2xl font-bold mb-6">Student Performance Analysis</h1>
 
 			<form onSubmit={handleSubmit} className="mb-8">
 				<div className="flex gap-4">
@@ -88,6 +91,16 @@ const YearlyAnalysisPage: NextPage = () => {
 
 			{result && (
 				<div className="space-y-8">
+					{/* Year */}
+					<section className="bg-white p-6 rounded-lg shadow">
+						<h2 className="text-xl font-semibold mb-4">🚨 Academic Year</h2>
+						<ul className="list-disc pl-5 space-y-1">
+							<li className="text-xl font-extrabold mb-4 text-red-600">
+								{result?.year}
+							</li>
+						</ul>
+					</section>
+
 					{/* Under-performing Students */}
 					<section className="bg-white p-6 rounded-lg shadow">
 						<h2 className="text-xl font-semibold mb-4">🚨 Under-Performing Students</h2>
@@ -104,6 +117,12 @@ const YearlyAnalysisPage: NextPage = () => {
 						)}
 					</section>
 
+					{/* Recommendation Summary */}
+					<section className="bg-white p-6 rounded-lg shadow">
+						<h2 className="text-xl font-semibold mb-4">🚨 Recommendation Summary</h2>
+						<p className="font-semibold">{result?.analysis}</p>
+					</section>
+
 					{/* Subject-wise Analysis */}
 					<section className="bg-white p-6 rounded-lg shadow">
 						<h2 className="text-xl font-semibold mb-4">📊 Subject-Wise Analysis</h2>
@@ -114,8 +133,8 @@ const YearlyAnalysisPage: NextPage = () => {
 									<div>
 										<h4 className="font-medium text-gray-700 mb-2">Class Avg:</h4>
 										<p className="font-extrabold text-gray-700 mb-2">{data.class_avg}</p>
-										</div>
-									
+									</div>
+
 								</div>
 								<div className="ml-4">
 									<h4 className="font-medium text-gray-700 mb-2">Critical Students:</h4>
@@ -173,14 +192,21 @@ const YearlyAnalysisPage: NextPage = () => {
 						<section className="bg-white p-6 rounded-lg shadow">
 							<h2 className="text-xl font-semibold mb-4">🤖 AI Model Insights</h2>
 							<div className="space-y-2">
-								<p className="font-medium">Method: {result?.analysis_metadata?.method_used}</p>
+								<p className="font-medium">Method: RandomForestClassifier Technique - {result?.analysis_metadata?.method_used}</p>
 							</div>
 						</section>
 					)}
+
+					<section className="bg-white p-6 rounded-lg shadow">
+						<h2 className="text-xl font-semibold mb-4">🤖 Total Students</h2>
+						<div className="space-y-2">
+							<p className="font-medium">{result?.total_records}</p>
+						</div>
+					</section>
 				</div>
 			)}
 		</div>
 	);
 };
 
-export default YearlyAnalysisPage;
+export default YearlyAnalysisPageEnhanced;
